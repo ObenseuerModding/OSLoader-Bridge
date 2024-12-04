@@ -3,6 +3,8 @@
   items:
     - href: ./Mod/Mod.md
     - href: ./Mod/Info.json.md
+    - href: ./Mod/ModType.md
+    - href: ./Mod/ModSettingDrawer.md
     - href: ./Mod/ModSettings.md
       items:
       - href: ./Mod/ModSettings/HeaderAttribute.md
