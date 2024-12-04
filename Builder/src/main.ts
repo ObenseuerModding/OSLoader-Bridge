@@ -36,7 +36,7 @@ const OSLoaderBin = "../OSLoader/OSLoader/bin/Release/netstandard2.0";
 
 const loaderConfig = {
     logDetails: false,
-    version: "0.1.0",
+    version: "0.3.0",
     enabled: true
 };
 

@@ -13,7 +13,7 @@ Property | Type | Description
 `repositoryUrl` | `string` | A link to the mod's repository. If the link is not a `github.com` or `gitlab.com` link, it will not be shown to the player for safety reasons.
 `modUrl` | `string` | A link to the mod's download page. Currently unused.
 `version` | `string` (`x.y.z`) | A SemVer compliant version (only having the major, minor and patch numbers is supported) you should increment each time you release your mod.
-`modId` | `string` | A unique identifier for your mod to be referenced by other mods and Harmony. I recommend we all use the `org.app` naming system, such that a mod that loads custom radio songs made by myself (Ierdna100) is called `ierdna.custom-radio-songs`.
+`modId` | `string` | A unique identifier for your mod to be referenced by other mods and Harmony. I recommend we all use the [Reverse Domain Name](https://en.wikipedia.org/wiki/Reverse_domain_name_notation) notation (e.g `org.app`), such that a mod that loads custom radio songs made by myself (Ierdna100) is called `ierdna.custom-radio-songs`. A more detailed explanation for the Java environnement as an example can be found [here](https://docs.oracle.com/javase/tutorial/java/package/namingpkgs.html).
 `author` | `string` | Name of the author. Currently unused.
 `dllFilepath` | `filepath` | Relative filepath to the assembly containing a class inheriting the `Mod` entrypoint class. If the assembly was called `RadioMod.dll` and was found in the same folder as `info.json`, it would be for example `"RadioMod.dll"`.
 `loaderVersion` | `string` (`x.y.z`) | Minimum version for the modloader required to load this mod. Currently unused.
