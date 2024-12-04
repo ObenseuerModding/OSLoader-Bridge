@@ -19,9 +19,9 @@ namespace TestMod
             Debug.Log("This amazing mod was loaded!");
         }
 
-        public override void UnloadMod()
+        public override bool UnloadMod()
         {
-            // Nothing yet
+            return false;
         }
     }
 }
