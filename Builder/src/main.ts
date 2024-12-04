@@ -40,9 +40,9 @@ const loaderConfig = {
     enabled: true
 };
 
-let asyncProcessDone = false;
-
 function main() {
+    fs.rmSync(outputPath, { recursive: true });
+
     fs.writeFileSync(logFile, "");
     if (!fs.existsSync(outputPath)) fs.mkdirSync(outputPath);
     if (!fs.existsSync(path.join(outputPath, "installData"))) fs.mkdirSync(path.join(outputPath, "installData"));
