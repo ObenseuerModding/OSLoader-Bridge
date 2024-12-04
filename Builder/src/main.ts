@@ -40,6 +40,8 @@ const loaderConfig = {
     enabled: true
 };
 
+let asyncProcessDone = false;
+
 function main() {
     fs.writeFileSync(logFile, "");
     if (!fs.existsSync(outputPath)) fs.mkdirSync(outputPath);
@@ -48,8 +50,8 @@ function main() {
     if (!fs.existsSync(path.join(outputPath, "installData", "OSLoaderContents"))) fs.mkdirSync(path.join(outputPath, "installData", "OSLoaderContents"));
     log("Generated structure of distributable folder");
 
-    chpr.exec(cmd_build_OSLoader, (err, out) => log(out));
-    chpr.exec(cmd_build_Installer, (err, out) => log(out));
+    log(chpr.execSync(cmd_build_OSLoader).toString());
+    log(chpr.execSync(cmd_build_Installer).toString());
 
     for (const file of fs.readdirSync("./unity2019.4.40f1")) {
         if (!fs.lstatSync(path.join("./unity2019.4.40f1", file)).isFile()) continue;
