@@ -29,7 +29,7 @@ namespace OSLoader
         {
             if (wasModified)
             {
-                linkedField.SetValue(modEntryUI.mod.actualMod.settings, localValue);
+                linkedField.SetValue(modEntryUI.mod.modComponent.settings, localValue);
                 callbacks?.ForEach(c => c.Invoke(localValue));
             }
         }

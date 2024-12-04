@@ -48,7 +48,7 @@ namespace OSLoader
 
         protected override void OnceEnabled()
         {
-            localValue = (int)linkedField.GetValue(modEntryUI.mod.actualMod.settings);
+            localValue = (int)linkedField.GetValue(modEntryUI.mod.modComponent.settings);
             inputField.text = localValue.ToString();
         }
     }

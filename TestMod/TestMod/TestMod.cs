@@ -12,7 +12,16 @@ namespace TestMod
         {
             instance = this;
             settings = new CustomSettingsExample();
+        }
+
+        public override void OnModInitialized()
+        {
             Debug.Log("This amazing mod was loaded!");
+        }
+
+        public override void UnloadMod()
+        {
+            // Nothing yet
         }
     }
 }

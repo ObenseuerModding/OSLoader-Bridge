@@ -17,13 +17,9 @@ namespace OSLoader
         public ModInfo info;
         public bool loaded = false;
 
-        public Mod actualMod;
+        public Mod modComponent;
 
         public Action generateUISettings;
-
-        public Action onSceneInitializing;
-        public Action onSceneLoaded;
-        public Action onModLoaded;
 
         public ModReference(string filepath)
         {
@@ -99,41 +95,24 @@ namespace OSLoader
 
             GameObject modGO = new GameObject(info.name, entrypoint.First());
             GameObject.DontDestroyOnLoad(modGO);
-            actualMod = modGO.GetComponent<Mod>();
-            actualMod.info = info;
+            modComponent = modGO.GetComponent<Mod>();
+            modComponent.info = info;
 
-            Type modType = actualMod.GetType();
-            foreach (MethodInfo method in modType.GetMethods())
-            {
-                switch (method.Name)
-                {
-                    case "OnSceneInitializing":
-                        onSceneInitializing = (Action)Delegate.CreateDelegate(modType, method);
-                        break;
-                    case "OnSceneLoaded":
-                        onSceneLoaded = (Action)Delegate.CreateDelegate(modType, method);
-                        break;
-                    case "OnModLoaded":
-                        onModLoaded = (Action)Delegate.CreateDelegate(modType, method);
-                        break;
-                }
-            }
-
-            actualMod.InitializeMod();
-            if (actualMod.HasValidSettings())
+            modComponent.InitializeMod();
+            if (modComponent.HasValidSettings())
             {
                 if (!File.Exists(info.settingsFilepath))
                 {
-                    actualMod.SaveSettings();
+                    modComponent.SaveSettings();
                 }
                 else
                 {
-                    actualMod.settings = (ModSettings)JsonConvert.DeserializeObject(File.ReadAllText(info.settingsFilepath), actualMod.settings.GetType());
+                    modComponent.settings = (ModSettings)JsonConvert.DeserializeObject(File.ReadAllText(info.settingsFilepath), modComponent.settings.GetType());
                 }
             }
             generateUISettings?.Invoke();
 
-            onModLoaded?.Invoke();
+            modComponent.OnModInitialized();
             loaded = true;
 
             if (isCalledByLoadOnStart)

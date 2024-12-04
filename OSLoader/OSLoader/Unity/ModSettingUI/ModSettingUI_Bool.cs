@@ -20,7 +20,7 @@ namespace OSLoader
 
         protected override void OnceEnabled()
         {
-            localValue = (bool)linkedField.GetValue(modEntryUI.mod.actualMod.settings);
+            localValue = (bool)linkedField.GetValue(modEntryUI.mod.modComponent.settings);
         }
 
         private void OnValueChanged(bool newValue)

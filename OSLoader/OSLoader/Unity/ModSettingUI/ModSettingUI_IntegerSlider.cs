@@ -37,14 +37,14 @@ namespace OSLoader
 
         protected override void OnceEnabled()
         {
-            localValue = (int)linkedField.GetValue(modEntryUI.mod.actualMod.settings);
+            localValue = (int)linkedField.GetValue(modEntryUI.mod.modComponent.settings);
             slider.value = localValue;
             valueDisplay.text = localValue.ToString();
         }
 
         public override void OnSave()
         {
-            linkedField.SetValue(modEntryUI.mod.actualMod.settings, localValue);
+            linkedField.SetValue(modEntryUI.mod.modComponent.settings, localValue);
         }
     }
 }

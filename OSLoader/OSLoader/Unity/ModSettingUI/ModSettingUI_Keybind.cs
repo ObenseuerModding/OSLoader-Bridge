@@ -86,7 +86,7 @@ namespace OSLoader
 
         protected override void OnceEnabled()
         {
-            localValue = (KeyCode)linkedField.GetValue(modEntryUI.mod.actualMod.settings);
+            localValue = (KeyCode)linkedField.GetValue(modEntryUI.mod.modComponent.settings);
             label.text = localValue.ToString();
         }
     }

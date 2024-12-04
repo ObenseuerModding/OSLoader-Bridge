@@ -75,9 +75,9 @@ namespace OSLoader
 
         public void OnDoneSaving()
         {
-            if (mod.actualMod.HasValidSettings())
+            if (mod.modComponent.HasValidSettings())
             {
-                mod.actualMod.SaveSettings();
+                mod.modComponent.SaveSettings();
             }
         }
 
@@ -94,7 +94,7 @@ namespace OSLoader
         private void GenerateSettings()
         {
             Loader.Instance.logger.Detail($"Generating settings for mod '{mod.info.name}'");
-            if (!mod.actualMod.HasValidSettings())
+            if (!mod.modComponent.HasValidSettings())
             {
                 Loader.Instance.logger.Detail($"Mod '{mod.info.name}' cannot generate settings as they are not valid!");
                 return;
@@ -102,7 +102,7 @@ namespace OSLoader
 
             UISettings = new List<ModSettingUI_Base>();
 
-            foreach (ModSettingDrawer settingDrawer in mod.actualMod.settings.SettingDrawers)
+            foreach (ModSettingDrawer settingDrawer in mod.modComponent.settings.SettingDrawers)
             {
                 GameObject UIGO = Instantiate(settingDrawer.objectToDraw, settingsContainer.transform);
 
