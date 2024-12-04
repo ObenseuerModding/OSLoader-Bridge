@@ -1,3 +1,7 @@
+Link to documentation because Github doesnt put them up automatically anymore:
+
+https://ierdna100.github.io/OSLoader/
+
 # OSLoader
 Mod loader for Obenseuer based on Unity Doorstop
 
