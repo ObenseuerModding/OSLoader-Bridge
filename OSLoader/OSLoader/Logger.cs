@@ -5,14 +5,22 @@ using System.IO;
 using UnityEngine;
 using Newtonsoft.Json;
 
-namespace OSLoader {
+namespace OSLoader
+{
     public class Logger
     {
         private readonly string name;
         private readonly bool logToLoaderLog;
         private readonly bool logTimestamps;
-
         private const string loaderFileFilepath = @"./loader.log";
+
+        //This creates a single stream instance that manages all logging
+        //Rather than rely on File.WriteAllText which creates and destroys
+        //Streams each time you call it
+        private readonly static TextWriter _logOutput = new StreamWriter(loaderFileFilepath, false)
+        {
+            AutoFlush = true
+        };
 
         public bool logDetails = false;
 
@@ -26,10 +34,15 @@ namespace OSLoader {
 
         public static void Initialize()
         {
-            // Wipe old file
-            File.WriteAllText(loaderFileFilepath, "[OS Loader] Logger initialized\n");
+            // Since we set append to false in the writer we can
+            // simply begin writing and it will clear for us
+
+            _logOutput.WriteLine("[OS Loader] Logger initialized");
         }
 
+        // This feels like a bad idea. There is a verbose and normal
+        // Version of doorstop so if the user has these logs its because
+        // The chose to install verbose and you shouldn't touch them imo
         public static void DeleteDoorstopLog()
         {
             string[] files = Directory.GetFiles("./", "*.log");
@@ -64,16 +77,25 @@ namespace OSLoader {
 
             log += $"[{name}] [INFO] {message}";
             if (logToLoaderLog)
-                File.AppendAllText(loaderFileFilepath, log + "\n");
+                _logOutput.WriteLine(log);
 
             if (Loader.Instance.ModloaderInitialized)
                 Debug.Log(log);
         }
 
-        public void Detail(object obj)
-        {
-            Log(obj.ToString());
-        }
+        public void Detail(object obj) =>
+        //{
+        // The previous code here feels like a bug so I "fixed" it
+        // For ya, buddy.
+
+        //Log(obj.ToString());
+        Detail(obj.ToString());
+
+        // Also: Seriously consider using the inline form for these
+        // types of methods
+        // public void Detail(object obj) => Detail(obj.ToString())
+        // Would be a lot cleaner so I left this as an example for you
+        //}
 
         public void Detail(string message)
         {
@@ -85,7 +107,7 @@ namespace OSLoader {
 
             log += $"[{name}] [DETAIL] {message}";
             if (logToLoaderLog)
-                File.AppendAllText(loaderFileFilepath, log + "\n");
+                _logOutput.WriteLine(log);
 
             if (Loader.Instance.ModloaderInitialized)
                 Debug.Log(log);
@@ -99,7 +121,7 @@ namespace OSLoader {
 
             log += $"[{name}] [ERROR] {message}";
             if (logToLoaderLog)
-                File.AppendAllText(loaderFileFilepath, log + "\n");
+                _logOutput.WriteLine(log);
 
             if (Loader.Instance.ModloaderInitialized)
                 Debug.LogError(log);
@@ -113,7 +135,7 @@ namespace OSLoader {
 
             log += $"[{name}] [WARN] {message}";
             if (logToLoaderLog)
-                File.AppendAllText(loaderFileFilepath, log + "\n");
+                _logOutput.WriteLine(log);
 
             if (Loader.Instance.ModloaderInitialized)
                 Debug.LogWarning(log);
