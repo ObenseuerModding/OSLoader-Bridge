@@ -11,13 +11,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="UnityEngine.Modules" Version="2019.4.40">
-			<IncludeAssets>all</IncludeAssets>
-			<PrivateAssets>all</PrivateAssets>
-		</PackageReference>
-	</ItemGroup>
-
-	<ItemGroup>
 		<Reference Include="Unity.TextMeshPro">
 			<HintPath>..\..\Dependencies\Unity.TextMeshPro.dll</HintPath>
 		</Reference>
@@ -37,5 +30,15 @@
 			<HintPath>..\..\Dependencies\UnityEngine.IMGUIModule.dll</HintPath>
 		</Reference>
 	</ItemGroup>
+
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="copy &quot;$(TargetPath)&quot; &quot;..\..\Dependencies\&quot;&#xD;&#xA;" />
+		<Exec
+			Command="copy &quot;$(TargetPath)&quot; &quot;..\..\ProjectReferences\Assets\Dependencies\&quot;&#xD;&#xA;" />
+		<!-- Uncomment this and change the paths to something that makes sense for you to auotmate
+		moving the built file. -->
+		<Exec
+			Command="copy &quot;$(TargetPath)&quot; &quot;D:\steam library\steamapps\common\Obenseuer\OSLoader&quot;&#xD;&#xA;" />
+	</Target>
 
 </Project>
