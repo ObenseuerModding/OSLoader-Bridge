@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
@@ -66,6 +66,11 @@ public class Logger
         }
     }
 
+    protected string GetTimeStampString()
+    {
+        return $"{DateTime.Now:yyyy-MM-ddTHH:mm:ss.fffZ}";
+    }
+
     public void Log(object obj)
     {
         Log(obj.ToString());
@@ -75,7 +80,7 @@ public class Logger
     {
         string log = string.Empty;
         if (logTimestamps)
-            log += $"[{JsonConvert.SerializeObject(DateTime.Now, new JsonSerializerSettings { DateFormatString = "yyyy-MM-ddTHH:mm:ss.fffZ" })}] ";
+            log = GetTimeStampString();
 
         log += $"[{name}] [INFO] {message}";
         if (logToLoaderLog)
@@ -105,7 +110,7 @@ public class Logger
 
         string log = string.Empty;
         if (logTimestamps)
-            log += $"[{JsonConvert.SerializeObject(DateTime.Now, new JsonSerializerSettings { DateFormatString = "yyyy-MM-ddTHH:mm:ss.fffZ" })}] ";
+            log = GetTimeStampString();
 
         log += $"[{name}] [DETAIL] {message}";
         if (logToLoaderLog)
@@ -119,7 +124,7 @@ public class Logger
     {
         string log = string.Empty;
         if (logTimestamps)
-            log += $"[{JsonConvert.SerializeObject(DateTime.Now, new JsonSerializerSettings { DateFormatString = "yyyy-MM-ddTHH:mm:ss.fffZ" })}] ";
+            log = GetTimeStampString();
 
         log += $"[{name}] [ERROR] {message}";
         if (logToLoaderLog)
@@ -133,7 +138,7 @@ public class Logger
     {
         string log = string.Empty;
         if (logTimestamps)
-            log += $"[{JsonConvert.SerializeObject(DateTime.Now, new JsonSerializerSettings { DateFormatString = "yyyy-MM-ddTHH:mm:ss.fffZ" })}] ";
+            log = GetTimeStampString();
 
         log += $"[{name}] [WARN] {message}";
         if (logToLoaderLog)
