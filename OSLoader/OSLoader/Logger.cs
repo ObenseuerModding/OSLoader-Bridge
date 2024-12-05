@@ -5,118 +5,146 @@ using System.IO;
 using UnityEngine;
 using Newtonsoft.Json;
 
-namespace OSLoader {
-    public class Logger
+
+//Its best practice to use file-scoped namespaces
+namespace OSLoader;
+
+public class Logger
+{
+    private readonly string name;
+    private readonly bool logToLoaderLog;
+    private readonly bool logTimestamps;
+    private const string loaderFileFilepath = @"./loader.log";
+
+    //This creates a single stream instance that manages all logging
+    //Rather than rely on File.WriteAllText which creates and destroys
+    //Streams each time you call it
+    private readonly static TextWriter _logOutput = new StreamWriter(loaderFileFilepath, false)
     {
-        private readonly string name;
-        private readonly bool logToLoaderLog;
-        private readonly bool logTimestamps;
+        AutoFlush = true
+    };
 
-        private const string loaderFileFilepath = @"./loader.log";
+    public bool logDetails = false;
 
-        public bool logDetails = false;
+    public Logger(string name, bool logToLoaderLog = false, bool logDetails = false, bool logTimestamps = true)
+    {
+        this.name = name;
+        this.logToLoaderLog = logToLoaderLog;
+        this.logDetails = logDetails;
+        this.logTimestamps = logTimestamps;
+    }
 
-        public Logger(string name, bool logToLoaderLog = false, bool logDetails = false, bool logTimestamps = true)
+    public static void Initialize()
+    {
+        // Since we set append to false in the writer we can
+        // simply begin writing and it will clear for us
+
+        _logOutput.WriteLine("[OS Loader] Logger initialized");
+    }
+
+    // This feels like a bad idea. There is a verbose and normal
+    // Version of doorstop so if the user has these logs its because
+    // The chose to install verbose and you shouldn't touch them imo
+    public static void DeleteDoorstopLog()
+    {
+        string[] files = Directory.GetFiles("./", "*.log");
+        foreach (string file in files)
         {
-            this.name = name;
-            this.logToLoaderLog = logToLoaderLog;
-            this.logDetails = logDetails;
-            this.logTimestamps = logTimestamps;
-        }
-
-        public static void Initialize()
-        {
-            // Wipe old file
-            File.WriteAllText(loaderFileFilepath, "[OS Loader] Logger initialized\n");
-        }
-
-        public static void DeleteDoorstopLog()
-        {
-            string[] files = Directory.GetFiles("./", "*.log");
-            foreach (string file in files)
+            if (file.ToLower().Contains("doorstop_"))
             {
-                if (file.ToLower().Contains("doorstop_"))
+                Loader.Instance.logger.Log("Deleting doorstop log file with path " + file);
+                try
                 {
-                    Loader.Instance.logger.Log("Deleting doorstop log file with path " + file);
-                    try
-                    {
-                        File.Delete(file);
-                    }
-                    catch // (Exception e)
-                    {
-                        // This actually comes in handy, we don't delete the last one (Shared File Exception)
-                        // Loader.Instance.logger.Log("Could not delete Doorstop log file: " + e);
-                    }
+                    File.Delete(file);
+                }
+                catch // (Exception e)
+                {
+                    // This actually comes in handy, we don't delete the last one (Shared File Exception)
+                    // Loader.Instance.logger.Log("Could not delete Doorstop log file: " + e);
                 }
             }
         }
+    }
 
-        public void Log(object obj)
-        {
-            Log(obj.ToString());
-        }
+    protected string GetTimeStampString()
+    {
+        return $"{DateTime.Now:yyyy-MM-ddTHH:mm:ss.fffZ}";
+    }
 
-        public void Log(string message)
-        {
-            string log = "";
-            if (logTimestamps)
-                log += $"[{JsonConvert.SerializeObject(DateTime.Now, new JsonSerializerSettings { DateFormatString = "yyyy-MM-ddTHH:mm:ss.fffZ" })}] ";
+    public void Log(object obj)
+    {
+        Log(obj.ToString());
+    }
 
-            log += $"[{name}] [INFO] {message}";
-            if (logToLoaderLog)
-                File.AppendAllText(loaderFileFilepath, log + "\n");
+    public void Log(string message)
+    {
+        string log = string.Empty;
+        if (logTimestamps)
+            log = GetTimeStampString();
 
-            if (Loader.Instance.ModloaderInitialized)
-                Debug.Log(log);
-        }
+        log += $"[{name}] [INFO] {message}";
+        if (logToLoaderLog)
+            _logOutput.WriteLine(log);
 
-        public void Detail(object obj)
-        {
-            Log(obj.ToString());
-        }
+        if (Loader.Instance.ModloaderInitialized)
+            Debug.Log(log);
+    }
 
-        public void Detail(string message)
-        {
-            if (!logDetails) return;
+    public void Detail(object obj) =>
+    //{
+    // The previous code here feels like a bug so I "fixed" it
+    // For ya, buddy.
 
-            string log = "";
-            if (logTimestamps)
-                log += $"[{JsonConvert.SerializeObject(DateTime.Now, new JsonSerializerSettings { DateFormatString = "yyyy-MM-ddTHH:mm:ss.fffZ" })}] ";
+    //Log(obj.ToString());
+    Detail(obj.ToString());
 
-            log += $"[{name}] [DETAIL] {message}";
-            if (logToLoaderLog)
-                File.AppendAllText(loaderFileFilepath, log + "\n");
+    // Also: Seriously consider using the inline form for these
+    // types of methods
+    // public void Detail(object obj) => Detail(obj.ToString())
+    // Would be a lot cleaner so I left this as an example for you
+    //}
 
-            if (Loader.Instance.ModloaderInitialized)
-                Debug.Log(log);
-        }
+    public void Detail(string message)
+    {
+        if (!logDetails) return;
 
-        public void Error(string message)
-        {
-            string log = "";
-            if (logTimestamps)
-                log += $"[{JsonConvert.SerializeObject(DateTime.Now, new JsonSerializerSettings { DateFormatString = "yyyy-MM-ddTHH:mm:ss.fffZ" })}] ";
+        string log = string.Empty;
+        if (logTimestamps)
+            log = GetTimeStampString();
 
-            log += $"[{name}] [ERROR] {message}";
-            if (logToLoaderLog)
-                File.AppendAllText(loaderFileFilepath, log + "\n");
+        log += $"[{name}] [DETAIL] {message}";
+        if (logToLoaderLog)
+            _logOutput.WriteLine(log);
 
-            if (Loader.Instance.ModloaderInitialized)
-                Debug.LogError(log);
-        }
+        if (Loader.Instance.ModloaderInitialized)
+            Debug.Log(log);
+    }
 
-        public void Warn(string message)
-        {
-            string log = "";
-            if (logTimestamps)
-                log += $"[{JsonConvert.SerializeObject(DateTime.Now, new JsonSerializerSettings { DateFormatString = "yyyy-MM-ddTHH:mm:ss.fffZ" })}] ";
+    public void Error(string message)
+    {
+        string log = string.Empty;
+        if (logTimestamps)
+            log = GetTimeStampString();
 
-            log += $"[{name}] [WARN] {message}";
-            if (logToLoaderLog)
-                File.AppendAllText(loaderFileFilepath, log + "\n");
+        log += $"[{name}] [ERROR] {message}";
+        if (logToLoaderLog)
+            _logOutput.WriteLine(log);
 
-            if (Loader.Instance.ModloaderInitialized)
-                Debug.LogWarning(log);
-        }
+        if (Loader.Instance.ModloaderInitialized)
+            Debug.LogError(log);
+    }
+
+    public void Warn(string message)
+    {
+        string log = string.Empty;
+        if (logTimestamps)
+            log = GetTimeStampString();
+
+        log += $"[{name}] [WARN] {message}";
+        if (logToLoaderLog)
+            _logOutput.WriteLine(log);
+
+        if (Loader.Instance.ModloaderInitialized)
+            Debug.LogWarning(log);
     }
 }
