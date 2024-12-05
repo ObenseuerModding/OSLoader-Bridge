@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
@@ -73,7 +73,7 @@ public class Logger
 
     public void Log(string message)
     {
-        string log = "";
+        string log = string.Empty;
         if (logTimestamps)
             log += $"[{JsonConvert.SerializeObject(DateTime.Now, new JsonSerializerSettings { DateFormatString = "yyyy-MM-ddTHH:mm:ss.fffZ" })}] ";
 
@@ -103,7 +103,7 @@ public class Logger
     {
         if (!logDetails) return;
 
-        string log = "";
+        string log = string.Empty;
         if (logTimestamps)
             log += $"[{JsonConvert.SerializeObject(DateTime.Now, new JsonSerializerSettings { DateFormatString = "yyyy-MM-ddTHH:mm:ss.fffZ" })}] ";
 
@@ -117,7 +117,7 @@ public class Logger
 
     public void Error(string message)
     {
-        string log = "";
+        string log = string.Empty;
         if (logTimestamps)
             log += $"[{JsonConvert.SerializeObject(DateTime.Now, new JsonSerializerSettings { DateFormatString = "yyyy-MM-ddTHH:mm:ss.fffZ" })}] ";
 
@@ -131,7 +131,7 @@ public class Logger
 
     public void Warn(string message)
     {
-        string log = "";
+        string log = string.Empty;
         if (logTimestamps)
             log += $"[{JsonConvert.SerializeObject(DateTime.Now, new JsonSerializerSettings { DateFormatString = "yyyy-MM-ddTHH:mm:ss.fffZ" })}] ";
 
