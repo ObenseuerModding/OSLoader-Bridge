@@ -44,7 +44,7 @@ namespace OSLoader
                     string targetMethodName = callbackAttribute.method ?? $"On{fieldInfo.Name[0].ToString().ToUpper()}{fieldInfo.Name.Substring(1)}Changed";
 
                     MethodInfo callback = callbackAttribute.type.GetMethod(targetMethodName);
-                    if (callback == null) 
+                    if (callback == null)
                     {
                         Loader.Instance.logger.Error($"Callback on class '{callbackAttribute.type}' with method '{callbackAttribute.method}' does not exist! Cannot generate settings.");
                         if (callbackAttribute.method == null)

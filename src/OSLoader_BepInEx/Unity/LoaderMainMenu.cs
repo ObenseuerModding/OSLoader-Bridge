@@ -20,8 +20,8 @@ namespace OSLoader
         public int confirmationTextLifetime = 400;
         public int confirmationTextLife = 0;
 
-        public Button closeButton;
-        public Button saveButton;
+        public UnityEngine.UI.Button closeButton;
+        public UnityEngine.UI.Button saveButton;
 
         public GameObject modsContentWindow;
 
@@ -40,7 +40,7 @@ namespace OSLoader
         {
             Loader.Instance.logger.Log("Loader Menu Initialized!");
             title.text = $"OSLoader Menu (F10 to toggle) v{Loader.Instance.config.Version}";
-            
+
             closeButton.onClick.AddListener(OnClose);
             saveButton.onClick.AddListener(OnSave);
 

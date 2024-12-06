@@ -14,9 +14,9 @@ namespace OSLoader
         public TMP_Text version;
         public TMP_Text dependencies;
 
-        public Button gitLink;
-        public Button externalLink;
-        public Button settingsButton;
+        public UnityEngine.UI.Button gitLink;
+        public UnityEngine.UI.Button externalLink;
+        public UnityEngine.UI.Button settingsButton;
         public Toggle enableMod;
 
         public GameObject settingsContainer;

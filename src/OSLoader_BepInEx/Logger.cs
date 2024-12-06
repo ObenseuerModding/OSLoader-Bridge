@@ -4,6 +4,8 @@ using System.Text;
 using System.IO;
 using UnityEngine;
 using Newtonsoft.Json;
+using BehaviorDesigner.Runtime.Tasks;
+using BepInEx.Logging;
 
 
 //Its best practice to use file-scoped namespaces
@@ -15,14 +17,7 @@ public class Logger
     private readonly bool logToLoaderLog;
     private readonly bool logTimestamps;
     private const string loaderFileFilepath = @"./loader.log";
-
-    //This creates a single stream instance that manages all logging
-    //Rather than rely on File.WriteAllText which creates and destroys
-    //Streams each time you call it
-    private readonly static TextWriter _logOutput = new StreamWriter(loaderFileFilepath, false)
-    {
-        AutoFlush = true
-    };
+    protected static ManualLogSource logSource = new("OSLoader Bridge Logger");
 
     public bool logDetails = false;
 
@@ -36,115 +31,30 @@ public class Logger
 
     public static void Initialize()
     {
-        // Since we set append to false in the writer we can
-        // simply begin writing and it will clear for us
-
-        _logOutput.WriteLine("[OS Loader] Logger initialized");
+        //nothing
     }
 
-    // This feels like a bad idea. There is a verbose and normal
-    // Version of doorstop so if the user has these logs its because
-    // The chose to install verbose and you shouldn't touch them imo
-    public static void DeleteDoorstopLog()
-    {
-        string[] files = Directory.GetFiles("./", "*.log");
-        foreach (string file in files)
-        {
-            if (file.ToLower().Contains("doorstop_"))
-            {
-                Loader.Instance.logger.Log("Deleting doorstop log file with path " + file);
-                try
-                {
-                    File.Delete(file);
-                }
-                catch // (Exception e)
-                {
-                    // This actually comes in handy, we don't delete the last one (Shared File Exception)
-                    // Loader.Instance.logger.Log("Could not delete Doorstop log file: " + e);
-                }
-            }
-        }
-    }
-
-    protected string GetTimeStampString()
-    {
-        return $"{DateTime.Now:yyyy-MM-ddTHH:mm:ss.fffZ}";
-    }
-
-    public void Log(object obj)
-    {
-        Log(obj.ToString());
-    }
-
+    public void Log(object obj) => Log(obj.ToString());
     public void Log(string message)
     {
-        string log = string.Empty;
-        if (logTimestamps)
-            log = GetTimeStampString();
-
-        log += $"[{name}] [INFO] {message}";
-        if (logToLoaderLog)
-            _logOutput.WriteLine(log);
-
-        if (Loader.Instance.ModloaderInitialized)
-            Debug.Log(log);
+        logSource.LogInfo(message);
     }
 
-    public void Detail(object obj) =>
-    //{
-    // The previous code here feels like a bug so I "fixed" it
-    // For ya, buddy.
-
-    //Log(obj.ToString());
-    Detail(obj.ToString());
-
-    // Also: Seriously consider using the inline form for these
-    // types of methods
-    // public void Detail(object obj) => Detail(obj.ToString())
-    // Would be a lot cleaner so I left this as an example for you
-    //}
+    public void Detail(object obj) => Detail(obj.ToString());
 
     public void Detail(string message)
     {
         if (!logDetails) return;
-
-        string log = string.Empty;
-        if (logTimestamps)
-            log = GetTimeStampString();
-
-        log += $"[{name}] [DETAIL] {message}";
-        if (logToLoaderLog)
-            _logOutput.WriteLine(log);
-
-        if (Loader.Instance.ModloaderInitialized)
-            Debug.Log(log);
+        Log(message);
     }
 
     public void Error(string message)
     {
-        string log = string.Empty;
-        if (logTimestamps)
-            log = GetTimeStampString();
-
-        log += $"[{name}] [ERROR] {message}";
-        if (logToLoaderLog)
-            _logOutput.WriteLine(log);
-
-        if (Loader.Instance.ModloaderInitialized)
-            Debug.LogError(log);
+        Log(message);
     }
 
     public void Warn(string message)
     {
-        string log = string.Empty;
-        if (logTimestamps)
-            log = GetTimeStampString();
-
-        log += $"[{name}] [WARN] {message}";
-        if (logToLoaderLog)
-            _logOutput.WriteLine(log);
-
-        if (Loader.Instance.ModloaderInitialized)
-            Debug.LogWarning(log);
+        Log(message);
     }
 }

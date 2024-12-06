@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Newtonsoft.Json;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using UnityEngine.SceneManagement;
-using System.Reflection;
 using System.Linq;
-using Unity.Collections;
+using BepInEx.Logging;
 
 namespace OSLoader
 {
@@ -17,7 +13,7 @@ namespace OSLoader
 
         public bool ModloaderInitialized { get; private set; } = false;
 
-        public static readonly string loaderFilepath = typeof(Loader).Assembly.Location;
+        public static readonly string loaderFilepath = Path.GetDirectoryName(typeof(Loader).Assembly.Location);
         public const string loaderConfigFileFilepath = @"loader_config.json";
         public const string modsFilepath = @"mods";
         public const string modsSettingsFilename = @"settings.json";
@@ -120,7 +116,6 @@ namespace OSLoader
             logger.Log("Finished loading mods!");
 
             logger.Log("OS Loader initialized!");
-            Logger.DeleteDoorstopLog();
         }
     }
 }
