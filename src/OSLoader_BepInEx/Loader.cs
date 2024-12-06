@@ -17,7 +17,7 @@ namespace OSLoader
 
         public bool ModloaderInitialized { get; private set; } = false;
 
-        public const string loaderFilepath = @"./OSLoader";
+        public static readonly string loaderFilepath = typeof(Loader).Assembly.Location;
         public const string loaderConfigFileFilepath = @"loader_config.json";
         public const string modsFilepath = @"mods";
         public const string modsSettingsFilename = @"settings.json";
@@ -39,7 +39,7 @@ namespace OSLoader
         public LoaderConfig config;
 
         public OSScene currentScene;
-        
+
         public Loader()
         {
             Instance = this;
