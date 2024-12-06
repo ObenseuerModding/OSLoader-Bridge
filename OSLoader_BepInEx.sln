@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{81A04F56-E370-4D8A-87DE-F0AACE50259E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSLoader", "src\OSLoader_BepInEx\OSLoader.csproj", "{D6719115-A769-4AE7-B189-55D17983DB57}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D6719115-A769-4AE7-B189-55D17983DB57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6719115-A769-4AE7-B189-55D17983DB57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6719115-A769-4AE7-B189-55D17983DB57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6719115-A769-4AE7-B189-55D17983DB57}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D6719115-A769-4AE7-B189-55D17983DB57} = {81A04F56-E370-4D8A-87DE-F0AACE50259E}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {11417B95-3889-4E8D-891D-640E1E21C6E2}
+	EndGlobalSection
+EndGlobal
