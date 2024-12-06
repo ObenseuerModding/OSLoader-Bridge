@@ -51,9 +51,9 @@ namespace OSLoader
 
             logger.Log("OS Loader initializing...");
 
-            // When first called, this determines that the game has loaded its main assemblies
-            SceneManager.sceneLoaded += OnSceneLoaded;
             logger.Log("OS Loader listening for game start...");
+
+            OnGameStart();
         }
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)

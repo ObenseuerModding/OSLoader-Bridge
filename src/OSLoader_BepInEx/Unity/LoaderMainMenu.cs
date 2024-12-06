@@ -39,7 +39,7 @@ namespace OSLoader
         public void Initialize()
         {
             Loader.Instance.logger.Log("Loader Menu Initialized!");
-            title.text = $"OSLoader Menu (F10 to toggle) v{Loader.Instance.config.Version}";
+            title.text = $"OSLoader BepInEx Bridge (F10 to toggle) v{Loader.Instance.config.Version}";
 
             closeButton.onClick.AddListener(OnClose);
             saveButton.onClick.AddListener(OnSave);

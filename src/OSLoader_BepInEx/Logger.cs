@@ -6,6 +6,7 @@ using UnityEngine;
 using Newtonsoft.Json;
 using BehaviorDesigner.Runtime.Tasks;
 using BepInEx.Logging;
+using OSLoader.Bridge;
 
 
 //Its best practice to use file-scoped namespaces
@@ -17,7 +18,7 @@ public class Logger
     private readonly bool logToLoaderLog;
     private readonly bool logTimestamps;
     private const string loaderFileFilepath = @"./loader.log";
-    protected static ManualLogSource logSource = new("OSLoader Bridge Logger");
+    protected static ManualLogSource logSource = Plugin.Log;
 
     public bool logDetails = false;
 
